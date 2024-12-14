@@ -1,22 +1,46 @@
 ---
-title: "helli"
+title: "Hello"
 author: "Гладышев Никита Сергеевич"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library (dplyr)
+library (readr)
+source ("data.R")
+
 ```
 
 
 ```{r}
-set.seed (51)
-xs <- sample (1:100, 25)
+modern <- top10 %>% 
+  filter (date >= "1980-01-01")
 ```
 
+```{r}
+artists <- modern %>% 
+  count (artist) %>%
+  arrange (-n) %>%
+  filter (!artist %in% c ("Soundtrack", "Various Artists"))
+
+head (artists)
+```
+
+```{r}
+set.seed(52)
+xs <- sample (1:100, 25)
+```
 
 ```{r}
 me <- median (xs)
 ```
 
-`r me`
+Median is `r me``
+
+```{r}
+artists[xs,] %>%
+  arrange (-n) %>%
+  gt::gt ()
+```
+
